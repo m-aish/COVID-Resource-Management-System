@@ -1,33 +1,15 @@
-// import javax.swing.*;
-
-//   public static void (String args[]) {
-//     User user1 = new User();
-
-//     // initialize user:
-//     user1.setName("testUser1");
-//     user1.setAge(50);
-//     user1.setPhoneNumber(1234567890);
-
-//     // display JFrame returned by displayUserInfo()
-//     user1.displayUserInfo().setVisible(true);
-
-//     // run other methods in User class:
-//     System.out.println("Name of Initialized User is " + user1.getName());
-//     System.out.println("Age of Initialized User is " + user1.getAge());
-//     System.out.println("Phone Number of Initialized User is " + user1.getPhoneNumber());
-//     user1.viewHospitalMeta(1234);
-//   }
-// }
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Serializable;
+// import java.io.Serializable;
 import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
-class user extends JFrame implements ActionListener, Serializable {
+class User1 extends JFrame implements ActionListener, Serializable {
 
   String userName;
   int phoneNumber;
@@ -35,7 +17,6 @@ class user extends JFrame implements ActionListener, Serializable {
   String userGender;
   String userDateOfBirth;
 
-  // Components of the Form
   private Container c;
   private JLabel title;
   private JLabel name;
@@ -55,7 +36,6 @@ class user extends JFrame implements ActionListener, Serializable {
   private JCheckBox term;
   private JButton sub;
   private JButton reset;
-  private JTextArea tout;
   private JLabel res;
   private JTextArea resadd;
 
@@ -65,25 +45,23 @@ class user extends JFrame implements ActionListener, Serializable {
   private String years[] = { "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005",
       "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019" };
 
-  // constructor, to initialize the components
-  // with default values.
-  user() {
+  User1() {
     setTitle("Registration Form");
-    setBounds(300, 90, 900, 600);
+    setBounds(300, 90, 500, 600);
     setDefaultCloseOperation(EXIT_ON_CLOSE);
     setResizable(false);
 
     c = getContentPane();
     c.setLayout(null);
 
-    title = new JLabel("Registration Form");
-    title.setFont(new Font("Arial", Font.PLAIN, 30));
+    title = new JLabel("User Registration Form");
+    title.setFont(new Font("Arial", Font.PLAIN, 25));
     title.setSize(300, 30);
-    title.setLocation(300, 30);
+    title.setLocation(30, 30);
     c.add(title);
 
     name = new JLabel("Name");
-    name.setFont(new Font("Arial", Font.PLAIN, 20));
+    name.setFont(new Font("Arial", Font.PLAIN, 15));
     name.setSize(100, 20);
     name.setLocation(100, 100);
     c.add(name);
@@ -95,7 +73,7 @@ class user extends JFrame implements ActionListener, Serializable {
     c.add(tname);
 
     mno = new JLabel("Mobile");
-    mno.setFont(new Font("Arial", Font.PLAIN, 20));
+    mno.setFont(new Font("Arial", Font.PLAIN, 15));
     mno.setSize(100, 20);
     mno.setLocation(100, 150);
     c.add(mno);
@@ -107,7 +85,7 @@ class user extends JFrame implements ActionListener, Serializable {
     c.add(tmno);
 
     gender = new JLabel("Gender");
-    gender.setFont(new Font("Arial", Font.PLAIN, 20));
+    gender.setFont(new Font("Arial", Font.PLAIN, 15));
     gender.setSize(100, 20);
     gender.setLocation(100, 200);
     c.add(gender);
@@ -131,7 +109,7 @@ class user extends JFrame implements ActionListener, Serializable {
     gengp.add(female);
 
     dob = new JLabel("DOB");
-    dob.setFont(new Font("Arial", Font.PLAIN, 20));
+    dob.setFont(new Font("Arial", Font.PLAIN, 15));
     dob.setSize(100, 20);
     dob.setLocation(100, 250);
     c.add(dob);
@@ -155,7 +133,7 @@ class user extends JFrame implements ActionListener, Serializable {
     c.add(year);
 
     add = new JLabel("Address");
-    add.setFont(new Font("Arial", Font.PLAIN, 20));
+    add.setFont(new Font("Arial", Font.PLAIN, 15));
     add.setSize(100, 20);
     add.setLocation(100, 300);
     c.add(add);
@@ -185,15 +163,7 @@ class user extends JFrame implements ActionListener, Serializable {
     reset.setSize(100, 20);
     reset.setLocation(270, 450);
     reset.addActionListener(this);
-    c.add(reset);
-
-    tout = new JTextArea();
-    tout.setFont(new Font("Arial", Font.PLAIN, 15));
-    tout.setSize(300, 400);
-    tout.setLocation(500, 100);
-    tout.setLineWrap(true);
-    tout.setEditable(false);
-    c.add(tout);
+   c.add(reset);
 
     res = new JLabel("");
     res.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -201,85 +171,54 @@ class user extends JFrame implements ActionListener, Serializable {
     res.setLocation(100, 500);
     c.add(res);
 
-    resadd = new JTextArea();
-    resadd.setFont(new Font("Arial", Font.PLAIN, 15));
-    resadd.setSize(200, 75);
-    resadd.setLocation(580, 175);
-    resadd.setLineWrap(true);
-    c.add(resadd);
-
     setVisible(true);
   }
 
-  // method actionPerformed()
-  // to get the action performed
-  // by the user and act accordingly
   public void actionPerformed(ActionEvent e) {
-    if (e.getSource() == sub) {
-      if (term.isSelected()) {
-        // String data1;
-        // String data = "Name : " + tname.getText() + "\n" + "Mobile : " +
-        // tmno.getText() + "\n";
-        // if (male.isSelected())
-        // data1 = "Gender : Male" + "\n";
-        // else
-        // data1 = "Gender : Female" + "\n";
-        // String data2 = "DOB : " + (String) date.getSelectedItem() + "/" + (String)
-        // month.getSelectedItem() + "/"
-        // + (String) year.getSelectedItem() + "\n";
-
-        // String data3 = "Address : " + tadd.getText();
-        // tout.setText(data + data1 + data2 + data3);
-        // tout.setEditable(false);
-        // res.setText("Registration Successfully..");
-        String name = tname.getText();// + "|";
-        String phoneNumber = tmno.getText();// + "|";
+        String name = tname.getText() + "|";
+        try{
+        boolean flag = false;
+        int count = 0;
+        Scanner sc1 = new Scanner(new FileInputStream("users.txt"));
+        while(sc1.hasNextLine()) {
+         String line = sc1.nextLine();
+         if(line.indexOf(name)!=-1) {
+            flag = true;
+            count = count+1;
+         }
+      }
+      if(flag) {
+          res.setText("User already existed ");
+          Login Login1 = new Login();
+          Login1.setVisible(true);
+      }
+      else {
+       if (term.isSelected()) {
+      if (e.getSource() == sub) {
+        String phoneNumber = tmno.getText() + "|";
         String gender;
         if (male.isSelected())
-          gender = "Male";// + "|";
+          gender = "Male" + "|";
         else
-          gender = "Female";// + "|";
+          gender = "Female" + "|";
         String dateOfBirth = (String) date.getSelectedItem() + "/" + (String) month.getSelectedItem() + "/"
-            + (String) year.getSelectedItem(); // + "|";
-        String data3 = tadd.getText();// +"|";
-        tout.setText(name + phoneNumber + gender + dateOfBirth + data3);
-        user g = new user();
-        g.userName = name;
-        g.userAddress = data3;
-        g.userDateOfBirth = dateOfBirth;
-        g.userGender=gender;
-        g.phoneNumber = Integer.parseInt(phoneNumber);
-        try {
-          FileOutputStream fout = new FileOutputStream(".txt");
-          ObjectOutputStream out = new ObjectOutputStream(fout);
-          out.writeObject(g);
-          out.flush();
-          out.close();
-          System.out.println("Success");
-        } catch (Exception er) {
-          System.out.println(er);
-        }
-        // Creating stream to read the object
-      
-
-      // try {
-      // FileWriter fwrite = new FileWriter("users.txt");
-      // fwrite.write(name + phoneNumber + gender + dateOfBirth + data3);
-      // fwrite.close();
-      // System.out.println("Content is successfully written to the file.");
-      // } catch (IOException ioe) {
-      // System.out.print("Exception occured");
-      // }
-      tout.setEditable(false);
-      res.setText("Registration Successfully..");
+            + (String) year.getSelectedItem()+ "|";
+        String data3 = tadd.getText()+"|";
+     
+     
+      try {
+       FileWriter fwrite = new FileWriter("users.txt", true);
+      fwrite.write(name + phoneNumber + gender + dateOfBirth + data3+"\n");
+         fwrite.close();
+         System.out.println("Content is successfully written to the file.");
+         } catch (IOException ioe) {
+         System.out.print("Exception occured");
+         }
+      res.setText("Registration Successful");
     } else {
-      tout.setText("");
-      resadd.setText("");
       res.setText("Please accept the" + " terms & conditions..");
     }
-
   }
-
   else if(e.getSource()==reset)
 
   {
@@ -288,16 +227,20 @@ class user extends JFrame implements ActionListener, Serializable {
     tadd.setText(def);
     tmno.setText(def);
     res.setText(def);
-    tout.setText(def);
     term.setSelected(false);
     date.setSelectedIndex(0);
     month.setSelectedIndex(0);
     year.setSelectedIndex(0);
-    resadd.setText(def);
+    male.setSelected(false);
+    female.setSelected(false);
   }
   }
-
+  }
+  catch(FileNotFoundException fnfe){
+    System.out.println("FileNotFoundException");
+  }
+  }
   public static void main(String[] args) {
-    user f = new user();
+    User1 f = new User1();
   }
 }
